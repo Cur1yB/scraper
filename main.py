@@ -1,6 +1,7 @@
-def main():
-    print("Hello from parser-requests!")
+from scraper.login import login
 
+def main():
+    login()
 
 if __name__ == "__main__":
     main()
