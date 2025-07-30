@@ -1,7 +1,8 @@
 from bs4 import BeautifulSoup
 from scraper.constants import BASE
 
-def run_sql_query(session,  db="testDB", query="SELECT * FROM users;"):
+def run_sql_query(session,  db="testDB", table='users'):
+    query = f'SELECT * FROM {table};'
     sql_page = session.get(f"{BASE}/index.php", params={
         "route": "/database/sql",
         "db": db,
