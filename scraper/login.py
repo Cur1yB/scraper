@@ -2,11 +2,12 @@ import requests
 from bs4 import BeautifulSoup
 import os
 from dotenv import load_dotenv
+from scraper.constants import BASE
+from scraper.query import run_sql_query
 
 load_dotenv()
 
 def login():
-    BASE = "http://185.244.219.162/phpmyadmin"
     LOGIN = os.getenv('LOGIN')
     PASSWORD = os.getenv('PASSWORD')
 
@@ -24,3 +25,4 @@ def login():
 
     if any(k.startswith("pmaAuth") for k in session.cookies.keys()):
         print("OK")
+        run_sql_query(session)
