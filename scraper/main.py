@@ -11,7 +11,7 @@ def main():
         session, db=args.db, table=args.table, cols=args.cols
     )  # Mmm... SQL Injection
     if args.formatter not in FORMAT_MAPPER.keys():
-        raise RuntimeError(f'Formatter {args.formatter} not supported')
+        raise RuntimeError(f"Formatter {args.formatter} not supported")
     format_view = FORMAT_MAPPER[args.formatter](table)
     print(format_view)
 

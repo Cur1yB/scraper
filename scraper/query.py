@@ -4,16 +4,16 @@ from requests import Session
 
 
 def run_sql_query(session: Session, db: str, table: str, cols: str) -> str:
-    '''
+    """
     Imitates the SQL query functionality in the admin panel
 
     :param session: Requests session
     :param db: Database name
     :param table: Table name
     :param cols: Columns to select
-    
+
     :return: Table as HTML string
-    '''
+    """
     query = f"SELECT {cols} FROM {table};"
     sql_page = session.get(
         f"{BASE}/index.php",

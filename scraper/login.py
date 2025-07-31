@@ -4,14 +4,14 @@ from scraper.constants import BASE
 
 
 def login(login: str, password: str) -> requests.Session:
-    '''
+    """
     Login to the site and return the session
 
     :param login: username
     :param password: password
-    
+
     :return: session
-    '''
+    """
     session = requests.Session()
 
     response = session.get(f"{BASE}/index.php", params={"route": "/"})

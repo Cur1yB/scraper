@@ -1,30 +1,11 @@
 import pytest
-from bs4 import BeautifulSoup
 from scraper.query import run_sql_query
-
-
-TOKEN_HTML = (
-    '<html><body><input type="hidden" name="token" value="test-token"></body></html>'
+from scraper.tests.supports.constants import (
+    TOKEN_HTML,
+    NO_TABLE_HTML,
+    RESULT_HTML_TEMPLATE,
+    NO_TOKEN_HTML,
 )
-
-RESULT_HTML_TEMPLATE = """
-<html><body>
-<table class="table_results">
-  <thead>
-    <tr><th>id</th><th>name</th><th>email</th></tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td data-type="int">1</td>
-      <td data-type="string">Alice</td>
-      <td data-type="string">alice@example.com</td>
-    </tr>
-  </tbody>
-</table>
-</body></html>
-"""
-
-NO_TABLE_HTML = "<html><body><div>no results</div></body></html>"
 
 
 class FakeResponse:
@@ -75,7 +56,7 @@ def test_run_sql_query_success(db, table, cols, expected_sql):
         td.get_text(strip=True)
         for td in table_tag.select("tbody tr")[0].select("td[data-type]")
     ]
-    assert first_row == ["1", "Alice", "alice@example.com"]
+    assert first_row == ["1", "pupa&lupa", "pupa@lupa.com"]
 
     assert sess.last_post_url.endswith("/index.php?route=/import")
     assert sess.last_post_data["db"] == db
@@ -93,9 +74,6 @@ def test_run_sql_query_raises_when_no_table():
 
 
 def test_run_sql_query_missing_token_raises():
-    sess = CapturingSession(
-        token_html="<html><body>no token</body></html>",
-        result_html=RESULT_HTML_TEMPLATE,
-    )
+    sess = CapturingSession(token_html=NO_TOKEN_HTML, result_html=RESULT_HTML_TEMPLATE)
     with pytest.raises((TypeError, KeyError, AttributeError)):
         run_sql_query(sess, db="testDB", table="users", cols="*")
